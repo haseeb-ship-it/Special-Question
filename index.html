@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Question For You 💝</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .question {
+            font-size: 1.3em;
+            color: #555;
+            margin-bottom: 40px;
+        }
+
+        .button-container {
+            position: relative;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        #yesBtn {
+            background: #4CAF50;
+            color: white;
+        }
+
+        #yesBtn:hover {
+            background: #45a049;
+            transform: scale(1.1);
+        }
+
+        #noBtn {
+            background: #f44336;
+            color: white;
+            position: absolute;
+        }
+
+        #noBtn:hover {
+            background: #da190b;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .celebration {
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .celebration h2 {
+            color: #4CAF50;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .celebration p {
+            font-size: 1.3em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .celebration img {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .emoji {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="questionSection">
+            <div class="emoji">💝</div>
+            <h1>A Special Question...</h1>
+            <p class="question">Will you be my Valentine? 💕</p>
+            
+            <div class="button-container">
+                <button id="yesBtn">Yes! 😊</button>
+                <button id="noBtn">No 😢</button>
+            </div>
+        </div>
+
+        <div id="celebrationSection" class="hidden celebration">
+            <h2>🎉 Yay! 🎉</h2>
+            <p>I knew you'd say yes! 💖</p>
+            <div class="emoji">🥳🎊💕</div>
+            <img src="https://media.giphy.com/media/g5R9dok94mrIvplmZd/giphy.gif" alt="Celebration">
+            <p style="margin-top: 20px; font-size: 1.1em;">You made my day! ❤️</p>
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const questionSection = document.getElementById('questionSection');
+        const celebrationSection = document.getElementById('celebrationSection');
+        const container = document.querySelector('.container');
+
+        // Function to move the "No" button to a random position
+        function moveButton() {
+            const containerRect = container.getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
+            
+            // Calculate maximum positions to keep button inside container
+            const maxX = containerRect.width - btnRect.width - 100;
+            const maxY = 80;
+            
+            // Generate random positions
+            const randomX = Math.random() * maxX - (maxX / 2);
+            const randomY = Math.random() * maxY - (maxY / 2);
+            
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        }
+
+        // Move button when mouse enters or tries to click
+        noBtn.addEventListener('mouseenter', moveButton);
+        noBtn.addEventListener('click', moveButton);
+        
+        // For mobile/touch devices
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveButton();
+        });
+
+        // Handle "Yes" button click
+        yesBtn.addEventListener('click', () => {
+            questionSection.classList.add('hidden');
+            celebrationSection.classList.remove('hidden');
+            
+            // Optional: Add confetti effect or play sound
+            createConfetti();
+        });
+
+        // Optional confetti effect
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.backgroundColor = getRandomColor();
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.top = '-10px';
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.pointerEvents = 'none';
+                    confetti.style.zIndex = '1000';
+                    document.body.appendChild(confetti);
+                    
+                    let pos = -10;
+                    const fall = setInterval(() => {
+                        if (pos > window.innerHeight) {
+                            clearInterval(fall);
+                            confetti.remove();
+                        } else {
+                            pos += 5;
+                            confetti.style.top = pos + 'px';
+                        }
+                    }, 20);
+                }, i * 50);
+            }
+        }
+
+        function getRandomColor() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#ffa07a', '#98d8c8', '#f7dc6f'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+    </script>
+</body>
+</html>
